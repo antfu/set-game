@@ -1,0 +1,33 @@
+.button {
+  background: #e2e2e2;
+  border: 1px solid #000;
+  border-radius: 3px;
+  box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.73);
+  display: inline-block;
+  transition: .1s ease-out;
+  padding: 2px 8px;
+  color: #222;
+  margin: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.button:hover:not(.disabled) {
+  transform: scale(1.2,1.2);
+  z-index: 1000;
+}
+
+.button.disabled {
+  opacity: .3;
+  cursor: default;
+}
+
+.buttons {
+  text-align: center;
+  margin: 10px;
+}
+
+.button.big,
+.buttons.big .button {
+  font-size: 1.5em;
+}

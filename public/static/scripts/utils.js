@@ -1,4 +1,11 @@
-var colors = ['#e46767', '#6bb11c', '#4caadf']
+var COLORS = ['#e46767', '#6bb11c', '#4caadf']
+
+var separte_number = function (value) {
+  var result = []
+  while (value)
+    result.unshift(value % 10 + 0 * (value = Math.floor(value / 10)))
+  return result
+}
 
 var parse_card = function (value) {
   // Number: { One, Two, Three }
@@ -6,20 +13,31 @@ var parse_card = function (value) {
   // Color: { Red, Green, Purple }
   // Shape: { Ovals, Squiggles, Diamonds }
 
-  var shape = value % 10 + 0 * (value = Math.floor(value / 10)) - 1
-  var color = value % 10 + 0 * (value = Math.floor(value / 10)) - 1
-  var shading = value % 10 + 0 * (value = Math.floor(value / 10)) - 1
-  var number = value % 10 + 0 * (value = Math.floor(value / 10))
-  var _color = colors[color]
+  var data = separte_number(value)
+  var _color = COLORS[data[2] - 1]
   return {
-    number: number,
-    shading: [_color, null, 'transparent'][shading],
+    number: data[0],
+    shading: [_color, null, 'transparent'][data[1] - 1],
     color: _color,
-    shape: '/static/svg/' + ['oval', 'squiggle', 'diamond'][shape] + '.svg',
+    shape: '/static/svg/' + ['oval', 'squiggle', 'diamond'][data[3] - 1] + '.svg',
   }
 }
 
-function shuffle(array) {
+var is_set = function (cards) {
+  var numbers = []
+  for (var i = 0; i < 3; i++)
+    numbers[i] = separte_number(cards[i])
+
+  for (var i = 0; i < 4; i++) {
+    var all_same = numbers[0][i] === numbers[1][i] && numbers[1][i] === numbers[2][i]
+    var all_diff = numbers[0][i] !== numbers[1][i] && numbers[1][i] !== numbers[2][i] && numbers[0][i] !== numbers[2][i]
+    if (!(all_same || all_diff))
+      return false
+  }
+  return true
+}
+
+var shuffle = function (array) {
   let counter = array.length;
 
   // While there are elements in the array
@@ -39,7 +57,7 @@ function shuffle(array) {
   return array;
 }
 
-function make_deck() {
+var make_deck = function () {
   var deck = []
   for (var v1 = 1; v1 <= 3; v1++)
     for (var v2 = 1; v2 <= 3; v2++)

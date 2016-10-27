@@ -7,8 +7,12 @@ html
   body
     #app
       .ground
-        template(v-for="v in ground")
-          card(:value="v")
+        .mask(v-for="(value,index) in ground", @click="select(index, $event)")
+          card(:value="value", :index="index", :class="{selected: inarr(index,selected)}")
+
+      .buttons.big
+        .button(:class="{disabled:selected.length != 3}", @click="set") SET!
+        .button(:class="{disabled:selected.length == 0}", @click="clear") Clear
 
     script#card-template(type='text/x-template')
       .card

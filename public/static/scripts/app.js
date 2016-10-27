@@ -19,15 +19,30 @@ Vue.directive('svg', function (el, binding) {
 var app = new Vue({
   el: '#app',
   data: {
-    ground: []
+    ground: [],
+    selected: []
   },
   methods: {
-    select: function(e) {
-      console.log(e)
+    select: function (index, e) {
+      if (this.inarr(index, this.selected))
+        this.selected.splice(this.selected.indexOf(index), 1);
+      else
+      if (this.selected.length < 3)
+        this.selected.push(index)
+    },
+    inarr: function (value, array) {
+      return array.indexOf(value) !== -1
+    },
+    clear: function () {
+      this.selected = []
+    },
+    set: function () {
+      if (this.selected.length !== 3)
+        return
     }
   }
 })
 
 
 var deck = make_deck()
-app.ground = deck.slice(0,16)
+app.ground = deck.slice(0, 16)

@@ -5,5 +5,5 @@
       <path d="M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2"/>
     </pattern>
   </defs>
-  <rect y="2.5" rx="10" ry="10" width="40" height="15"/>
+  <rect y="2.5" rx="7.5" ry="7.5" width="40" height="15"/>
 </svg>

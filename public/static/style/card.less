@@ -1,6 +1,22 @@
+@import './query.less';
+
 .ground {
   width: 320px;
-  margin: 0 auto;
+  margin: 20px auto;
+  transition: transform .3s ease-out;
+  text-align: center;
+  @media @mobile {}
+  @media @tablet {
+    transform: rotate(90deg);
+  }
+  @media @desktop, @desktop-xl {
+    width: 370px;
+    transform: rotate(90deg) scale(1.2,1.2);
+  }
+}
+
+.mask {
+  display: inline-block;
 }
 
 .card {
@@ -27,6 +43,13 @@
       display: block;
     }
   }
+  @media @desktop, @desktop-xl {
+    margin: 10px;
+  }
+}
+
+.card.back {
+  background: #370000;
 }
 
 .card:hover {
@@ -36,6 +59,6 @@
 
 .card.selected {
   background: #fffab4;
-  transform: scale(1.1,1.1);
+  transform: scale(1.05,1.05);
   z-index: 1000;
 }
