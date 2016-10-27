@@ -1,31 +1,8 @@
-var colors = ['#e46767', '#6bb11c', '#4c6cdf']
-
-var parse_card = function (value) {
-  // Number: { One, Two, Three }
-  // Shading: { Solid, Striped, Open }
-  // Color: { Red, Green, Purple }
-  // Shape: { Ovals, Squiggles, Diamonds }
-
-  var shape = value % 10 + 0 * (value = Math.floor(value / 10)) - 1
-  var color = value % 10 + 0 * (value = Math.floor(value / 10)) - 1
-  var shading = value % 10 + 0 * (value = Math.floor(value / 10)) - 1
-  var number = value % 10 + 0 * (value = Math.floor(value / 10))
-  var _color = colors[color]
-  return {
-    number: number,
-    shading: [_color, null, 'transparent'][shading],
-    color: _color,
-    shape: '/static/svg/' + ['oval', 'squiggle', 'diamond'][shape] + '.svg',
-  }
-}
-
 Vue.component('card', {
   template: '#card-template',
   props: ['value'],
   data: function () {
-    var data = parse_card(this.value)
-    console.log(data)
-    return data
+    return parse_card(this.value)
   }
 })
 
@@ -41,8 +18,16 @@ Vue.directive('svg', function (el, binding) {
 
 var app = new Vue({
   el: '#app',
-  data: {},
+  data: {
+    ground: []
+  },
   methods: {
-
+    select: function(e) {
+      console.log(e)
+    }
   }
 })
+
+
+var deck = make_deck()
+app.ground = deck.slice(0,16)

@@ -6,11 +6,9 @@ html
     link(href='/static/style/index.css', rel='stylesheet')
   body
     #app
-      h1 Set
-      card(:value="2111")
-      card(:value="3331")
-      card(:value="2222")
-      card(:value="1213")
+      .ground
+        template(v-for="v in ground")
+          card(:value="v")
 
     script#card-template(type='text/x-template')
       .card
@@ -18,6 +16,7 @@ html
           template(v-for="n in number")
             img(:src='shape', v-svg="{color:color,shading:shading}")
 
-    script(src='/static/scripts/vue.min.js')
-    script(src='/static/scripts/svg-injector.min.js')
+    script(src='/static/scripts/dist/vue.min.js')
+    script(src='/static/scripts/dist/svg-injector.min.js')
+    script(src='/static/scripts/utils.js')
     script(src='/static/scripts/app.js')

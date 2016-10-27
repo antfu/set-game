@@ -1,3 +1,8 @@
+.ground {
+  width: 320px;
+  margin: 0 auto;
+}
+
 .card {
   position: relative;
   background: #e2e2e2;
@@ -6,20 +11,31 @@
   border: 1px solid #000;
   border-radius: 5px;
   box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.73);
-  margin: .5em;
+  margin: 2px 4px;
   display: inline-block;
+  transition: .1s ease-out;
 
   .symbol {
     position: relative;
     top: 50%;
     transform: perspective(1px) translateY(-50%);
 
-    img,
     svg {
       width: 42px;
       height: 22px;
-      margin: 1px auto;
+      margin: 0 auto;
       display: block;
     }
   }
+}
+
+.card:hover {
+  transform: scale(1.2,1.2);
+  z-index: 10000;
+}
+
+.card.selected {
+  background: #fffab4;
+  transform: scale(1.1,1.1);
+  z-index: 1000;
 }
