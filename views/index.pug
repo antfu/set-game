@@ -7,18 +7,18 @@ html
   body
     #app
       .ground
-        .mask(v-for="(value,index) in ground", @click="select(index, $event)")
-          card(:value="value", :index="index", :class="{selected: inarr(index,selected)}")
+        .mask(v-for='(value,index) in ground',:key="value", @click='select(index, $event)')
+          card(:value='value', :index='index', :class='{selected: inarr(index,selected)}')
 
       .buttons.big
-        .button(:class="{disabled:selected.length != 3}", @click="set") SET!
-        .button(:class="{disabled:selected.length == 0}", @click="clear") Clear
+        .button(:class='{disabled:selected.length != 3}', @click='set') SET!
+        .button(:class='{disabled:selected.length == 0}', @click='clear') Clear
 
     script#card-template(type='text/x-template')
       .card
         .symbol
-          template(v-for="n in number")
-            img(:src='shape', v-svg="{color:color,shading:shading}")
+          template(v-for='n in com.number')
+            .svg(v-svg='{color: com.color, shading: com.shading, shape:com.shape}')
 
     script(src='/static/scripts/dist/vue.min.js')
     script(src='/static/scripts/dist/svg-injector.min.js')

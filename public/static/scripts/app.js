@@ -2,25 +2,46 @@ Vue.component('card', {
   template: '#card-template',
   props: ['value'],
   data: function () {
-    return parse_card(this.value)
+    return {}
+  },
+  computed: {
+    com: function () {
+      return parse_card(this.value)
+    }
   }
 })
 
-Vue.directive('svg', function (el, binding) {
-  SVGInjector(el, {
-    each: function (svg) {
-      var value = binding.value || {}
-      svg.style.stroke = value.color || '#444'
-      svg.style.fill = value.shading || ('url(#' + svg.getElementsByTagName("pattern")[0].id + ')')
+Vue.directive('svg', {
+  bind: function (el, binding) {
+    this.refresh = function (_binding) {
+      var value = _binding.value || {}
+
+      while (el.firstChild)
+        el.removeChild(el.firstChild);
+
+      var img = document.createElement('img')
+      img.src = _binding.value.shape
+      el.appendChild(img)
+      SVGInjector(img, {
+        each: function (svg) {
+          svg.style.stroke = value.color || '#444'
+          svg.style.fill = value.shading || ('url(#' + svg.getElementsByTagName("pattern")[0].id + ')')
+        }
+      })
     }
-  })
+    this.refresh(binding)
+  },
+  update: function (el, binding) {
+    this.refresh(binding)
+  }
 })
 
 var app = new Vue({
   el: '#app',
   data: {
     ground: [],
-    selected: []
+    selected: [],
+    deck: []
   },
   methods: {
     select: function (index, e) {
@@ -39,10 +60,24 @@ var app = new Vue({
     set: function () {
       if (this.selected.length !== 3)
         return
+      var set = []
+      for (var i = 0; i < 3; i++)
+        set[i] = this.ground[this.selected[i]]
+      var judge = is_set(set)
+      console.log(set, judge)
+      if (judge) {
+        // Success
+        for (var i = 0; i < 3; i++)
+          Vue.set(this.ground, this.selected[i], app.deck.shift())
+        this.clear()
+      } else {
+        // Failed
+        this.clear()
+      }
     }
   }
 })
 
 
-var deck = make_deck()
-app.ground = deck.slice(0, 16)
+app.deck = make_deck()
+app.ground = app.deck.splice(0, 16)

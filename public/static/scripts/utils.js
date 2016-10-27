@@ -16,6 +16,7 @@ var parse_card = function (value) {
   var data = separte_number(value)
   var _color = COLORS[data[2] - 1]
   return {
+    code: value,
     number: data[0],
     shading: [_color, null, 'transparent'][data[1] - 1],
     color: _color,
