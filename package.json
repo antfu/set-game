@@ -1,0 +1,30 @@
+{
+  "name": "set-game",
+  "version": "0.0.1",
+  "description": "A real-time card game Set",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antfu/set-game.git"
+  },
+  "keywords": [
+    "set",
+    "game",
+    "card"
+  ],
+  "author": "Anthony Fu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/antfu/set-game/issues"
+  },
+  "homepage": "https://github.com/antfu/set-game#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "pug": "^2.0.0-beta6",
+    "ws": "^1.1.1"
+  }
+}
