@@ -100,7 +100,7 @@ Mixins.local = {
           callback: function () {
             setTimeout(function () {
               for (var i = 0; i < 3; i++)
-                if (selected[i])
+                if (selected[i] !== undefined)
                   Vue.set(vm.ground, selected[i], app.deck.shift())
               vm.flips({
                 cards: selected,
