@@ -6,18 +6,23 @@ html
     link(href='/static/style/index.css', rel='stylesheet')
   body
     #app
-      .ground
-        .mask(v-for='(value,index) in ground',:key="value", @click='select(index, $event)', :class='{selected: inarr(index,selected)}')
-          card(:value='value', :index='index', :class="{flipped:flipped[index]}")
-
       .previous
-        .mask(v-for='(value,index) in previous',:key="value")
-          card(:value='value', :index='index', class="flipped")
+        .mask.small(v-for='(value,index) in previous',:key='value')
+          card(:value='value', :index='index', class='flipped')
+
+      .ground
+        .mask(v-for='(value,index) in ground', :key='value', @click='select(index, $event)', :class='{selected: inarr(index,selected)}')
+          card(:value='value', :index='index', :class='{flipped:flipped[index]}')
+
+      .right.numbers {{solved}}
+      .left.numbers {{deck_amount}}
 
       .corner.left(:class='{disabled:selected.length != 3}', @click='set')
         .mi check
       .corner.right(:class='{disabled:selected.length == 0}', @click='clear')
         .mi delete
+      .fullscreen.btn(@click='fullscreen')
+        .mi {{fullscreened ? 'fullscreen_exit' : 'fullscreen'}}
 
     script#card-template(type='text/x-template')
       .card

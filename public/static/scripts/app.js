@@ -43,7 +43,15 @@ var app = new Vue({
     selected: [],
     deck: [],
     flipped: [],
-    previous: []
+    previous: [],
+    amount: 12,
+    solved: 0,
+    fullscreened: false
+  },
+  computed: {
+    deck_amount: function () {
+      return this.deck.length
+    }
   },
   methods: {
     select: function (index, e) {
@@ -70,8 +78,10 @@ var app = new Vue({
         set[i] = this.ground[this.selected[i]]
       var judge = is_set(set)
       console.log(set, judge)
-      judge = true //for debug
+        //judge = true //for debug
       if (judge) {
+        vibrate(100)
+        this.solved = this.solved + 1
         var selected = this.selected.slice(0)
         this.previous = set
         this.flips({
@@ -91,6 +101,7 @@ var app = new Vue({
         vm.clear()
       } else {
         // Failed
+        vibrate(500)
         this.clear()
       }
     },
@@ -112,17 +123,23 @@ var app = new Vue({
       else
       if (callback)
         callback()
+    },
+    fullscreen: function () {
+      if (this.fullscreened)
+        this.fullscreened = fullscreen_exit()
+      else
+        this.fullscreened = fullscreen(document.body)
     }
   },
   created: function () {
     this.flipped = []
-    for (var i = 0; i < 16; i++)
+    for (var i = 0; i < this.amount; i++)
       this.flipped.push(0)
 
     this.deck = make_deck()
-    this.ground = this.deck.splice(0, 16)
+    this.ground = this.deck.splice(0, this.amount)
     this.flips({
-      cards: range(0, 15),
+      cards: range(0, this.amount - 1),
       timeout: 70,
       delay: 500
     })

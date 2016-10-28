@@ -54,10 +54,26 @@
     text-align: left;
   }
 
+  &.center {
+    text-align: center;
+    left: calc(~"50% - 60px");
+    bottom: -50px;
+  }
+
+  &.small {
+    transform: scale(0.4,0.4);
+
+    .mi {
+      margin: 15px;
+      font-size: 4em;
+    }
+  }
+
   &.disabled {
     opacity: .4;
     transform: scale(0.75,0.75);
     background: rgba(255,255,255,0.06);
+    cursor: default;
 
     .mi {
       opacity: .4;

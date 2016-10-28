@@ -1,20 +1,43 @@
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: "Open Sans", Helvetica, Arial, sans-serif, "Microsoft YaHei UI";
+  font-family: 'Raleway', "Open Sans", Helvetica, Arial, sans-serif, "Microsoft YaHei UI";
   color: white;
   height: 100%;
   width: 100%;
   overflow: hidden;
   user-select: none;
+  background-color: #333;
 }
 
 body {
-  background-color: #333;
   height: 100%;
   width: 100%;
   overflow: hidden;
   position: relative;
   margin: 0;
   padding: 0;
+  background-color: #333;
+}
+
+#app {
+  background-color: #333;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.fullscreen.btn {
+  width: 30px;
+  text-align: center;
+  left: calc(~"50% - 15px");
+  position: absolute;
+  bottom: 0;
+  opacity: .4;
+  cursor: pointer;
+
+  .mi {
+    font-size: 1.5em;
+  }
 }

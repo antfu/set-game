@@ -76,3 +76,39 @@ var make_deck = function () {
   deck = shuffle(deck)
   return deck
 }
+
+var vibrate = function (time) {
+  navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate
+  if (navigator.vibrate)
+    navigator.vibrate(time || 500)
+}
+
+var fullscreen = function (el) {
+  if (
+    document.fullscreenEnabled ||
+    document.webkitFullscreenEnabled ||
+    document.mozFullScreenEnabled ||
+    document.msFullscreenEnabled
+  ) {
+    if (el.requestFullscreen)
+      el.requestFullscreen();
+    else if (el.mozRequestFullScreen)
+      el.mozRequestFullScreen()
+    else if (el.webkitRequestFullScreen)
+      el.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+    else
+      return false
+  } else
+    return false
+  return true
+}
+
+var fullscreen_exit = function () {
+  if (document.exitFullscreen)
+    document.exitFullscreen()
+  else if (document.mozExitFullscreen)
+    document.mozExitFullscreen()
+  else if (document.webkitExitFullscreen)
+    document.webkitExitFullscreen();
+  return false
+}

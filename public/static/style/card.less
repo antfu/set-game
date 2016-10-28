@@ -1,17 +1,24 @@
 @import './query.less';
 
 .ground {
-  width: 320px;
-  margin: 20px auto;
+  margin: 10px auto;
+  width: 350px;
   transition: transform .3s ease-out;
   text-align: center;
+  background: #666;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: inset 0 0 10px 0 rgba(0, 0, 0, 0.8);
+  border: 1px solid #ccc;
+  transform-origin: top;
   @media @mobile {}
-  @media @tablet {
-    transform: rotate(90deg);
+  @media @small-mobile {
+    transform: scale(.8) translateX(-8.5%);
   }
-  @media @desktop, @desktop-xl {
-    width: 370px;
-    transform: rotate(90deg) scale(1.2,1.2);
+  @media @tablet, @desktop, @desktop-xl {
+    transform: scale(1.2);
+    margin: 30px auto;
+    width: 400px;
   }
 }
 
@@ -21,12 +28,23 @@
   transition: transform .8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
   &.selected {
-    transform: scale(1.1,1.07);
+    transform: scale(1.02,1.02);
     z-index: 1000;
 
     .card.flipped {
       box-shadow: inset 0 0 15px 0 rgba(255, 138, 0, 0.85);
       background: #f5eeca;
+    }
+  }
+
+  &.small {
+    height: 32px;
+    width: 48px;
+
+    .card {
+      transform: scale(0.5,0.5) translate(-50%,-50%);
+      height: 55px;
+      width: 85px;
     }
   }
   @media @desktop, @desktop-xl {
@@ -40,12 +58,12 @@
 .card {
   position: relative;
   background: #e2e2e2;
-  height: 110px;
-  width: 70px;
+  height: 70px;
+  width: 110px;
   border: 1px solid #000;
   border-radius: 5px;
-  box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.7);
-  margin: 2px 4px;
+  box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.5);
+  margin: 3px 2px;
   display: inline-block;
   transform-style: preserve-3d;
   transition: transform .8s cubic-bezier(0.175, 0.885, 0.32, 1.275), background .3s ease-in-out;
@@ -54,13 +72,20 @@
     backface-visibility: hidden;
     position: relative;
     top: 50%;
+    height: 42px;
     transform: perspective(1px) translateY(-50%);
 
+    .svg {
+      display: inline-block;
+      text-align: center;
+    }
+
     svg {
-      width: 42px;
-      height: 22px;
+      width: 22px;
+      height: 42px;
       margin: 0 auto;
-      display: block;
+      display: inline-block;
+      text-align: center;
     }
   }
 
@@ -73,12 +98,27 @@
     transform: rotateY(180deg);
     background: #7e7a7a;
   }
-  @media @desktop, @desktop-xl {
+  @media @tablet, @desktop, @desktop-xl {
     margin: 10px;
   }
 }
 
 .previous {
-  display: none;
-  transform: scale(0.4,0.4);
+  text-align: center;
+  height: 35px;
+  margin-top: 10px;
+}
+
+.numbers {
+  position: absolute;
+  top: 14px;
+  font-size: 25px;
+
+  &.left {
+    left: 20px;
+  }
+
+  &.right {
+    right: 20px;
+  }
 }
