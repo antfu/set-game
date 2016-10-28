@@ -41,10 +41,13 @@ var app = new Vue({
   data: {
     ground: [],
     selected: [],
-    deck: []
+    deck: [],
+    flipped: []
   },
   methods: {
     select: function (index, e) {
+      if (!this.flipped[index])
+        return;
       if (this.inarr(index, this.selected))
         this.selected.splice(this.selected.indexOf(index), 1);
       else
@@ -61,23 +64,65 @@ var app = new Vue({
       if (this.selected.length !== 3)
         return
       var set = []
+      var vm = this
       for (var i = 0; i < 3; i++)
         set[i] = this.ground[this.selected[i]]
       var judge = is_set(set)
       console.log(set, judge)
+      //judge = true //for debug
       if (judge) {
-        // Success
-        for (var i = 0; i < 3; i++)
-          Vue.set(this.ground, this.selected[i], app.deck.shift())
-        this.clear()
+        var selected = this.selected.slice(0)
+        this.flips({
+          cards: selected,
+          to: 0,
+          callback: function () {
+            setTimeout(function () {
+              for (var i = 0; i < 3; i++)
+                Vue.set(vm.ground, selected[i], app.deck.shift())
+              vm.flips({
+                cards: selected,
+                delay: 200
+              })
+            }, 500)
+          },
+        })
+        vm.clear()
       } else {
         // Failed
         this.clear()
       }
+    },
+    flips: function (obj) {
+      var vm = this
+      setTimeout(function () {
+        vm.flip(obj.cards.slice(0), obj.to, obj.timeout, obj.inorder, obj.callback)
+      }, obj.delay || 0)
+    },
+    flip: function (cards, to, timeout, inorder, callback) {
+      var vm = this
+      var i = inorder ? 0 : Math.floor(Math.random() * cards.length)
+      Vue.set(this.flipped, cards[i], to === undefined ? 1 : to)
+      cards.splice(i, 1)
+      if (cards.length)
+        setTimeout(function () {
+          vm.flip(cards, to, timeout, inorder, callback)
+        }, timeout || 130)
+      else
+      if (callback)
+        callback()
     }
+  },
+  created: function () {
+    this.flipped = []
+    for (var i = 0; i < 16; i++)
+      this.flipped.push(0)
+
+    this.deck = make_deck()
+    this.ground = this.deck.splice(0, 16)
+    this.flips({
+      cards: range(0, 15),
+      timeout: 70,
+      delay: 500
+    })
   }
 })
-
-
-app.deck = make_deck()
-app.ground = app.deck.splice(0, 16)

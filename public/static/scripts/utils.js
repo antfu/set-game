@@ -24,6 +24,14 @@ var parse_card = function (value) {
   }
 }
 
+var range = function (start, end) {
+  var foo = [];
+  for (var i = start; i <= end; i++) {
+    foo.push(i);
+  }
+  return foo;
+}
+
 var is_set = function (cards) {
   var numbers = []
   for (var i = 0; i < 3; i++)
