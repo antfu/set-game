@@ -7,17 +7,20 @@ html
   body
     #app
       .previous
-        .mask.small(v-for='(value,index) in previous',:key='value')
+        .name {{previous.name}}
+        .mask.scale-compact-5(v-for='(value,index) in previous.cards',:key='value')
           card(:value='value', :index='index', class='flipped')
 
       .ground
-        .mask(v-for='(value,index) in ground', :key='value', @click='select(index, $event)', :class='{selected: inarr(index,selected)}')
-          card(:value='value', :index='index', :class='{flipped:flipped[index]}')
+        .pure-g
+          .pure-u-1-3(v-for='(value,index) in ground', :key='value')
+            .mask(@click='select(index, $event)', :class='{selected: inarr(index,selected)}')
+              card(:value='value', :index='index', :class='{flipped:flipped[index]}')
 
       .right.numbers {{solved}}
       .left.numbers {{deck_amount}}
 
-      .corner.left(:class='{disabled:selected.length != 3}', @click='set')
+      .corner.left(:class='{disabled:selected.length != 3}', @click='set()')
         .mi check
       .corner.right(:class='{disabled:selected.length == 0}', @click='clear')
         .mi delete
@@ -25,7 +28,7 @@ html
         .mi {{fullscreened ? 'fullscreen_exit' : 'fullscreen'}}
 
     script#card-template(type='text/x-template')
-      .card
+      .card(v-if="com")
         .front
           template(v-for='n in com.number')
             .svg(v-svg='{color: com.color, shading: com.shading, shape:com.shape}')
@@ -34,4 +37,5 @@ html
     script(src='/static/scripts/dist/vue.min.js')
     script(src='/static/scripts/dist/svg-injector.min.js')
     script(src='/static/scripts/utils.js')
+    script(src='/static/scripts/mixins.js')
     script(src='/static/scripts/app.js')

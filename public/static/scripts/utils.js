@@ -34,8 +34,12 @@ var range = function (start, end) {
 
 var is_set = function (cards) {
   var numbers = []
-  for (var i = 0; i < 3; i++)
-    numbers[i] = separte_number(cards[i])
+  for (var i = 0; i < 3; i++) {
+    if (!cards[i])
+      return false
+    else
+      numbers[i] = separte_number(cards[i])
+  }
 
   for (var i = 0; i < 4; i++) {
     var all_same = numbers[0][i] === numbers[1][i] && numbers[1][i] === numbers[2][i]

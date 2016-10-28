@@ -1,69 +1,19 @@
 @import './query.less';
-
-.ground {
-  margin: 10px auto;
-  width: 350px;
-  transition: transform .3s ease-out;
-  text-align: center;
-  background: #666;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: inset 0 0 10px 0 rgba(0, 0, 0, 0.8);
-  border: 1px solid #ccc;
-  transform-origin: top;
-  @media @mobile {}
-  @media @small-mobile {
-    transform: scale(.8) translateX(-8.5%);
-  }
-  @media @tablet, @desktop, @desktop-xl {
-    transform: scale(1.2);
-    margin: 30px auto;
-    width: 400px;
-  }
-}
-
-.mask {
-  display: inline-block;
-  position: relative;
-  transition: transform .8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
-  &.selected {
-    transform: scale(1.02,1.02);
-    z-index: 1000;
-
-    .card.flipped {
-      box-shadow: inset 0 0 15px 0 rgba(255, 138, 0, 0.85);
-      background: #f5eeca;
-    }
-  }
-
-  &.small {
-    height: 32px;
-    width: 48px;
-
-    .card {
-      transform: scale(0.5,0.5) translate(-50%,-50%);
-      height: 55px;
-      width: 85px;
-    }
-  }
-  @media @desktop, @desktop-xl {
-    &:hover {
-      transform: scale(1.2,1.2);
-      z-index: 10000;
-    }
-  }
-}
+@card-width: 110px;
+@card-height: 70px;
+@card-compact-width: @card-width - 20px;
+@card-compact-height: @card-height - 20px;
+@card-margin: 2px;
 
 .card {
+  height: @card-height;
+  width: @card-width;
+  margin: @card-margin;
   position: relative;
   background: #e2e2e2;
-  height: 70px;
-  width: 110px;
   border: 1px solid #000;
   border-radius: 5px;
   box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.5);
-  margin: 3px 2px;
   display: inline-block;
   transform-style: preserve-3d;
   transition: transform .8s cubic-bezier(0.175, 0.885, 0.32, 1.275), background .3s ease-in-out;
@@ -98,20 +48,121 @@
     transform: rotateY(180deg);
     background: #7e7a7a;
   }
+}
+
+.ground {
+  margin: 10px auto;
+  transition: transform .3s ease-out;
+  text-align: center;
+  max-width: 800px;
+  background: #666;
+  padding: 10px;
+  margin: 2px;
+  border-radius: 8px;
+  box-shadow: inset 0 0 10px 0 rgba(0, 0, 0, 0.8);
+  border: 1px solid #ccc;
+  transform-origin: top;
+  @media @small-mobile {
+    .card {
+      height: @card-compact-height;
+      width: @card-compact-width;
+    }
+  }
+  @media @tablet, @desktop, @desktop-xl {
+    transform: scale(1.2);
+    margin: 30px auto;
+    width: 400px;
+  }
+}
+
+.mask {
+  display: inline-block;
+  position: relative;
+  transition: transform .8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  &.selected {
+    transform: scale(1.02,1.02);
+    z-index: 1000;
+
+    .card.flipped {
+      box-shadow: inset 0 0 15px 0 rgba(255, 138, 0, 0.85);
+      background: #f5eeca;
+    }
+  }
+  .generate-scales(10);
+
+  .generate-scales(@n, @i:1) when (@i =< @n) {
+    @step: .1;
+
+    &.scale-@{i} {
+      @scale: @step * @i;
+      height: (@card-height + 2 * @card-margin) * @scale;
+      width: (@card-width + 2 * @card-margin) * @scale;
+
+      .card {
+        transform: scale(@scale) translate(-50%, -50%) rotateY(180deg);
+        height: @card-height;
+        width: @card-width;
+      }
+
+      .card.flipped {
+        transform: scale(@scale) translate(-50%, -50%);
+      }
+    }
+
+    &.scale-compact-@{i} {
+      @scale: @step * @i;
+      height: (@card-compact-height + 2 * @card-margin) * @scale;
+      width: (@card-compact-width + 2 * @card-margin) * @scale;
+
+      .card {
+        transform: scale(@scale) translate(-50%, -50%) rotateY(180deg);
+        height: @card-compact-height;
+        width: @card-compact-width;
+      }
+
+      .card.flipped {
+        transform: scale(@scale) translate(-50%, -50%);
+      }
+    }
+    .generate-scales(@n, (@i + 1));
+  }
+  @media @mobile {
+    margin: 5px;
+  }
+  @media @small-mobile {
+    margin: 2px;
+  }
   @media @tablet, @desktop, @desktop-xl {
     margin: 10px;
+  }
+  @media @desktop, @desktop-xl {
+    &:hover {
+      transform: scale(1.2,1.2);
+      z-index: 10000;
+    }
   }
 }
 
 .previous {
   text-align: center;
-  height: 35px;
-  margin-top: 10px;
+  height: 40px;
+  margin: 5px auto 10px;
+
+  .name {
+    font-size: .6em;
+    height: 11px;
+    opacity: .6;
+  }
+
+  .mask {
+    margin: 1px;
+  }
 }
 
 .numbers {
   position: absolute;
-  top: 14px;
+  top: 12px;
   font-size: 25px;
 
   &.left {
