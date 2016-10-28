@@ -42,7 +42,8 @@ var app = new Vue({
     ground: [],
     selected: [],
     deck: [],
-    flipped: []
+    flipped: [],
+    previous: []
   },
   methods: {
     select: function (index, e) {
@@ -69,9 +70,10 @@ var app = new Vue({
         set[i] = this.ground[this.selected[i]]
       var judge = is_set(set)
       console.log(set, judge)
-      //judge = true //for debug
+      judge = true //for debug
       if (judge) {
         var selected = this.selected.slice(0)
+        this.previous = set
         this.flips({
           cards: selected,
           to: 0,

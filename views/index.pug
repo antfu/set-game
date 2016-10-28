@@ -10,9 +10,14 @@ html
         .mask(v-for='(value,index) in ground',:key="value", @click='select(index, $event)', :class='{selected: inarr(index,selected)}')
           card(:value='value', :index='index', :class="{flipped:flipped[index]}")
 
-      .buttons.big
-        .button(:class='{disabled:selected.length != 3}', @click='set') SET!
-        .button(:class='{disabled:selected.length == 0}', @click='clear') Clear
+      .previous
+        .mask(v-for='(value,index) in previous',:key="value")
+          card(:value='value', :index='index', class="flipped")
+
+      .corner.left(:class='{disabled:selected.length != 3}', @click='set')
+        .mi check
+      .corner.right(:class='{disabled:selected.length == 0}', @click='clear')
+        .mi delete
 
     script#card-template(type='text/x-template')
       .card

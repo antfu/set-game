@@ -31,3 +31,41 @@
 .buttons.big .button {
   font-size: 1.5em;
 }
+
+.corner {
+  background: rgba(255,255,255,0.3);
+  width: 120px;
+  height: 120px;
+  position: absolute;
+  bottom: -40px;
+  border-radius: 120px;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.5);
+  transition: .3s ease-in-out;
+  -webkit-tap-highlight-color: transparent;
+
+  &.left {
+    left: -40px;
+    text-align: right;
+  }
+
+  &.right {
+    right: -40px;
+    text-align: left;
+  }
+
+  &.disabled {
+    opacity: .4;
+    transform: scale(0.75,0.75);
+    background: rgba(255,255,255,0.06);
+
+    .mi {
+      opacity: .4;
+    }
+  }
+
+  .mi {
+    margin: 25px;
+    font-size: 3em;
+  }
+}
