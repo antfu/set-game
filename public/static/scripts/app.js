@@ -7,7 +7,7 @@ Vue.component('card', {
   computed: {
     com: function () {
       if (this.value)
-        return parse_card(this.value)
+        return utils.parse_card(this.value)
       else
         return null
     }

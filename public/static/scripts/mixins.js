@@ -43,18 +43,12 @@ Mixins.commons = {
     },
     fullscreen: function () {
       if (this.fullscreened)
-        this.fullscreened = fullscreen_exit()
+        this.fullscreened = utils.fullscreen_exit()
       else
-        this.fullscreened = fullscreen(document.body)
+        this.fullscreened = utils.fullscreen(document.body)
     },
     has_set: function () {
-      var amount = this.ground.length;
-      for (var x = 0; x < amount - 2; x++)
-        for (var y = x + 1; y < amount - 1; y++)
-          for (var z = y + 1; z < amount; z++)
-            if (is_set([this.ground[x], this.ground[y], this.ground[z]]))
-              return [x, y, z]
-      return false
+      return utils.has_set(this.ground)
     }
   }
 }
@@ -85,12 +79,12 @@ Mixins.local = {
       var vm = this
       for (var i = 0; i < 3; i++)
         set[i] = this.ground[selected[i]]
-      var judge = is_set(set)
+      var judge = utils.is_set(set)
       console.log(set, judge)
       if (this.debug)
         judge = true //for debug
       if (judge) {
-        vibrate(100)
+        utils.vibrate(100)
         this.solved = this.solved + 1
         this.previous.cards = set.sort()
         this.previous.name = 'Previous'
@@ -113,7 +107,7 @@ Mixins.local = {
         vm.clear()
       } else {
         // Failed
-        vibrate(500)
+        utils.vibrate(500)
         this.clear()
       }
     },
@@ -135,7 +129,7 @@ Mixins.local = {
         this.ground.push(this.deck.shift())
       }
       this.flips({
-        cards: range(this.amount - 3, this.amount - 1),
+        cards: utils.range(this.amount - 3, this.amount - 1),
         timeout: 70,
         delay: 500
       })
@@ -155,10 +149,10 @@ Mixins.local = {
     for (var i = 0; i < this.amount; i++)
       this.flipped.push(0)
 
-    this.deck = make_deck()
+    this.deck = utils.make_deck()
     this.ground = this.deck.splice(0, this.amount)
     this.flips({
-      cards: range(0, this.amount - 1),
+      cards: utils.range(0, this.amount - 1),
       timeout: 70,
       delay: 500
     })
