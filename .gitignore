@@ -1,5 +1,6 @@
 public/static/style/*.css
 vue.js
+run.sh
 
 # Logs
 logs
