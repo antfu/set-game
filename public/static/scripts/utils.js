@@ -25,6 +25,13 @@
     }
   }
 
+  exports.repeat = function(v, n) {
+    var result = []
+    for (var i = 0; i < n; i++)
+      result.push(v)
+    return result
+  }
+  
   exports.range = function (start, end) {
     var foo = [];
     for (var i = start; i <= end; i++) {

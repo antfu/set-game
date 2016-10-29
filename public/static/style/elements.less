@@ -90,11 +90,18 @@
   position: absolute;
   text-align: center;
   width: 200px;
-  height: 30px;
+  height: 50px;
   left: calc(~"50% - 100px");
   bottom: 0;
 
+  .title {
+    font-size: 10px;
+    margin-bottom: 6px;
+    opacity: .2;
+  }
+
   .mi {
+    position: relative;
     font-size: 1.5em;
     opacity: .3;
     cursor: pointer;
@@ -104,6 +111,7 @@
     label {
       font-family: monospace;
       position: absolute;
+      left: 22px;
       top: 0;
       font-size: 12px;
     }
@@ -123,5 +131,5 @@ blockquote {
   margin-left: 0;
   padding: 0 1em;
   border-left: .25em solid #afafaf;
-  opacity: 0.8;
+  opacity: .8;
 }

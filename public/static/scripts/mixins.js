@@ -2,11 +2,27 @@ var Mixins = Mixins || {}
 
 Mixins.commons = {
   data: {
+    ground: [],
+    selected: [],
     flipped: [],
     fullscreened: false,
     debug: false,
+    amount: 12,
+    solved: 0,
+    local: false,
+    previous: {
+      name: '',
+      cards: []
+    },
   },
   methods: {
+    get_selected: function (s) {
+      var selected = s || this.selected
+      var set = []
+      for (var i = 0; i < selected.length; i++)
+        set[i] = this.ground[selected[i]]
+      return set
+    },
     select: function (index, e) {
       if (!this.flipped[index])
         return;
@@ -31,12 +47,19 @@ Mixins.commons = {
     flip: function (cards, to, timeout, inorder, callback) {
       var vm = this
       var i = inorder ? 0 : Math.floor(Math.random() * cards.length)
-      Vue.set(this.flipped, cards[i], to === undefined ? 1 : to)
+      to = to === undefined ? 1 : to
+      var t_timeout = timeout || 130
+
+      if (this.flipped[cards[i]] === to)
+        t_timeout = 0
+      else
+        Vue.set(this.flipped, cards[i], to)
+
       cards.splice(i, 1)
       if (cards.length)
         setTimeout(function () {
           vm.flip(cards, to, timeout, inorder, callback)
-        }, timeout || 130)
+        }, t_timeout)
       else
       if (callback)
         callback()
@@ -51,24 +74,16 @@ Mixins.commons = {
       return utils.has_set(this.ground)
     },
     help: function () {
-      location.href = "/help"
+      location.href = "/help?from=" + location.pathname
     }
   }
 }
 
 Mixins.local = {
   data: {
-    ground: [],
-    selected: [],
     deck: [],
-    previous: {
-      name: '',
-      cards: []
-    },
+    hints: 2,
     local: true,
-    amount: 12,
-    solved: 0,
-    hints: 2
   },
   computed: {
     deck_amount: function () {
@@ -77,13 +92,11 @@ Mixins.local = {
   },
   methods: {
     set: function (s) {
+      var vm = this
       var selected = (s || this.selected).slice(0)
       if (selected.length !== 3)
         return
-      var set = []
-      var vm = this
-      for (var i = 0; i < 3; i++)
-        set[i] = this.ground[selected[i]]
+      var set = this.get_selected(selected)
       var judge = utils.is_set(set)
       console.log(set, judge)
       if (this.debug)
@@ -153,9 +166,7 @@ Mixins.local = {
     restart: function () {
       localStorage.removeItem('set-game-save')
       this.amount = 12
-      this.flipped = []
-      for (var i = 0; i < this.amount; i++)
-        this.flipped.push(0)
+      this.flipped = utils.repeat(0, 18)
 
       this.previous = {
         name: '',
@@ -191,7 +202,6 @@ Mixins.local = {
       if (!saved)
         return null
       var data = JSON.parse(saved)
-      console.log(data)
 
       this.flipped = []
       for (var i = 0; i < this.amount; i++)
@@ -225,9 +235,48 @@ Mixins.web = function (url) {
   var cache = {}
 
   return {
+    data: {
+      url: url,
+      deck_amount: 0,
+      connected: false,
+      local: false,
+      flipped: utils.repeat(0, 18)
+    },
     methods: {
-      set: {
-
+      set: function (s) {
+        var selected = (s || this.selected).slice(0)
+        if (selected.length !== 3)
+          return
+        var set = this.get_selected(selected)
+        this.send({ play: set })
+      },
+      send: function (obj) {
+        this.socket.send(JSON.stringify(obj))
+      },
+      connect: function () {
+        var vm = this
+        if (this.socket && this.socket.readyState !== this.socket.CLOSED)
+          return
+        this.socket = new WebSocket(this.url)
+        this.socket.onmessage = function (e) {
+          var msg = JSON.parse(e.data)
+          console.log('Message: ', msg)
+          if (msg.update) {
+            for (var k in msg.update)
+              Vue.set(vm, k, msg.update[k])
+          }
+          if (msg.ground) {
+            vm.ground = msg.ground
+            vm.flips({ cards: utils.range(0, msg.ground.length - 1), timeout: 70 })
+          }
+        }
+        this.socket.onclose = function (e) {
+          vm.connected = false
+        }
+        this.socket.onopen = function () {
+          vm.connected = true
+        }
+        return this.socket
       }
     },
     created: function () {

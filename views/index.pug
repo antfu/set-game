@@ -26,10 +26,12 @@ html
         .mi clear
 
       .toolbar
+        .title {{local?'Local Mode':'Online Mode'}}
         .mi(@click='help') help
-        .mi(@click='fullscreen') {{fullscreened ? 'fullscreen_exit' : 'zoom_out_map'}}
-        .mi(@click='restart', v-if='local') refresh
-        .mi(@click='hint', v-if='local', :class='{disabled:!hints}') lightbulb_outline
+        .mi(click='fullscreen') {{fullscreened ? 'fullscreen_exit' : 'zoom_out_map'}}
+        .mi(v-if='local', @click='restart') refresh
+        .mi(v-if='!local', @click='connect', :class='{disabled:connected}') settings_input_hdmi
+        .mi(v-if='local', @click='hint', :class='{disabled:!hints}') lightbulb_outline
           label {{hints}}
 
     script#card-template(type='text/x-template')
@@ -45,3 +47,4 @@ html
     script(src='/static/scripts/mixins.js')
     script(src='/static/scripts/extend.js')
     script(src='/static/scripts/app.js')
+    script makeapp({mode:'#{mode}'})

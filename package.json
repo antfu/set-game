@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "debug": "cross-env DEBUG=* node app.js",
+    "debug": "cross-env DEBUG=* supervisor -w controllers,game app.js",
     "run": "node app.js"
   },
   "repository": {

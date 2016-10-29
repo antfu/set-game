@@ -1,14 +1,22 @@
 var express = require('express')
-  , router = express.Router()
+var router = express.Router()
 
 router.use('/ws', require('./websocket'))
 
-router.get('/', function(req, res) {
-  res.render('index')
+router.get('/', function (req, res) {
+  res.redirect('/single')
 })
 
-router.get('/help', function(req, res) {
+router.get('/help', function (req, res) {
   res.render('help')
+})
+
+router.get('/single', function (req, res) {
+  res.render('index', { mode: 'local' })
+})
+
+router.get('/room/:room/player/:player', function (req, res) {
+  res.render('index', { mode: 'web', room: req.params.room, player: req.params.player })
 })
 
 module.exports = router

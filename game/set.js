@@ -6,6 +6,7 @@ class SetGame {
   constructor(name) {
     this.name = name
     this.players = {}
+    this.start()
   }
 
   start() {
