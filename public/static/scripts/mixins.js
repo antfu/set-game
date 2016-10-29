@@ -10,6 +10,7 @@ Mixins.commons = {
     amount: 12,
     solved: 0,
     local: false,
+    helping: false,
     previous: {
       name: '',
       cards: []
@@ -77,7 +78,8 @@ Mixins.commons = {
       this.selected = this.has_set()
     },
     help: function () {
-      location.href = "/help?from=" + location.pathname
+      //location.href = "/help?from=" + location.pathname
+      this.helping = !this.helping
     },
     set_made: function (indexes, new_cards, callback) {
       var vm = this

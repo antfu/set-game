@@ -36,6 +36,11 @@ html
         .mi(v-if='local', @click='hint', :class='{disabled:!hints}') lightbulb_outline
           label {{hints}}
 
+      .helping(v-if='helping')
+        iframe(src='/help')
+        .close(@click='help')
+          .mi clear
+
     script#card-template(type='text/x-template')
       .card(v-if='com')
         .front
