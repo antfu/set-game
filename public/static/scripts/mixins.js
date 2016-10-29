@@ -49,6 +49,9 @@ Mixins.commons = {
     },
     has_set: function () {
       return utils.has_set(this.ground)
+    },
+    help: function () {
+      location.href = "/help"
     }
   }
 }
