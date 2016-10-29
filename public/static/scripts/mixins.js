@@ -4,7 +4,7 @@ Mixins.commons = {
   data: {
     ground: [],
     selected: [],
-    flipped: [],
+    flipped: utils.repeat(18, 0),
     fullscreened: false,
     debug: false,
     amount: 12,
@@ -75,6 +75,29 @@ Mixins.commons = {
     },
     help: function () {
       location.href = "/help?from=" + location.pathname
+    },
+    set_made: function (indexes, new_cards, callback) {
+      var vm = this
+      utils.vibrate(100)
+      this.flips({
+        cards: indexes,
+        to: 0,
+        callback: function () {
+          setTimeout(function () {
+            for (var i = 0; i < indexes.length; i++)
+              if (indexes[i] !== undefined)
+                Vue.set(vm.ground, indexes[i], new_cards[i])
+            vm.flips({ cards: indexes, delay: 200 })
+            if (callback)
+              callback()
+          }, 500)
+        },
+      })
+      vm.clear()
+    },
+    set_failed: function () {
+      utils.vibrate(500)
+      this.clear()
     }
   }
 }
@@ -97,37 +120,17 @@ Mixins.local = {
       if (selected.length !== 3)
         return
       var set = this.get_selected(selected)
-      var judge = utils.is_set(set)
-      console.log(set, judge)
-      if (this.debug)
-        judge = true //for debug
-      if (judge) {
-        utils.vibrate(100)
+      if (utils.is_set(set)) {
         this.solved = this.solved + 1
         this.previous.cards = set.sort()
         this.previous.name = 'Previous'
-        this.flips({
-          cards: selected,
-          to: 0,
-          callback: function () {
-            setTimeout(function () {
-              for (var i = 0; i < 3; i++)
-                if (selected[i] !== undefined)
-                  Vue.set(vm.ground, selected[i], app.deck.shift())
-              vm.flips({
-                cards: selected,
-                delay: 200
-              })
-              vm.expend()
-              vm.save()
-            }, 500)
-          },
+        var new_cards = utils.repeat(3, function () { return vm.deck.pop() })
+        this.set_made(selected, new_cards, function () {
+          vm.expend()
+          vm.save()
         })
-        vm.clear()
       } else {
-        // Failed
-        utils.vibrate(500)
-        this.clear()
+        vm.set_failed()
       }
     },
     expend: function () {
@@ -143,10 +146,9 @@ Mixins.local = {
       }
 
       this.amount = this.amount + 3
-      for (var i = 0; i < 3; i++) {
-        this.flipped.push(0)
+      for (var i = 0; i < 3; i++)
         this.ground.push(this.deck.shift())
-      }
+
       this.flips({
         cards: utils.range(this.amount - 3, this.amount - 1),
         timeout: 70,
@@ -166,7 +168,7 @@ Mixins.local = {
     restart: function () {
       localStorage.removeItem('set-game-save')
       this.amount = 12
-      this.flipped = utils.repeat(0, 18)
+      this.flipped = utils.repeat(18, 0)
 
       this.previous = {
         name: '',
@@ -203,9 +205,7 @@ Mixins.local = {
         return null
       var data = JSON.parse(saved)
 
-      this.flipped = []
-      for (var i = 0; i < this.amount; i++)
-        this.flipped.push(0)
+      this.flipped = utils.repeat(18, 0)
 
       for (var k in data)
         Vue.set(this, k, data[k])
@@ -239,19 +239,20 @@ Mixins.web = function (url) {
       url: url,
       deck_amount: 0,
       connected: false,
-      local: false,
-      flipped: utils.repeat(0, 18)
+      local: false
     },
     methods: {
       set: function (s) {
         var selected = (s || this.selected).slice(0)
         if (selected.length !== 3)
           return
-        var set = this.get_selected(selected)
-        this.send({ play: set })
+        this.send({ play: selected })
       },
       send: function (obj) {
         this.socket.send(JSON.stringify(obj))
+      },
+      restart: function () {
+        this.send({ restart: true })
       },
       connect: function () {
         var vm = this
@@ -265,10 +266,22 @@ Mixins.web = function (url) {
             for (var k in msg.update)
               Vue.set(vm, k, msg.update[k])
           }
-          if (msg.ground) {
-            vm.ground = msg.ground
-            vm.flips({ cards: utils.range(0, msg.ground.length - 1), timeout: 70 })
-          }
+          if (msg.ground)
+            vm.flips({
+              to: 0,
+              cards: utils.range(0, msg.ground.length - 1),
+              timeout: 70,
+              callback: function () {
+                vm.ground = msg.ground
+                vm.flips({ cards: utils.range(0, msg.ground.length - 1), timeout: 70, delay: 300 })
+              }
+            })
+          if (msg.set_made)
+            vm.set_made(msg.set_made.indexes, msg.set_made.new_cards)
+          if (msg.set_failed)
+            vm.set_failed()
+          if (msg.solved)
+            vm.solved = msg.solved
         }
         this.socket.onclose = function (e) {
           vm.connected = false
@@ -280,7 +293,7 @@ Mixins.web = function (url) {
       }
     },
     created: function () {
-      //TODO
+      this.connect()
     }
   }
 }

@@ -6,12 +6,16 @@ var rooms = {}
 
 router.ws('/echo', function (ws, req) {
   ws.on('message', function (msg) {
-    ws.send(msg);
+    ws.send(msg)
   });
 })
 
 router.ws('/room/:room/player/:player', function (ws, req) {
   var room = rooms[req.params.room] = rooms[req.params.room] || new SetGame(req.params.room)
+  var player = room.get_player(req.params.player)
+
+  player.bind_ws(ws)
+
   var send = obj => {
     ws.send(JSON.stringify(obj))
   }
@@ -19,22 +23,13 @@ router.ws('/room/:room/player/:player', function (ws, req) {
   ws.on('message', function (e) {
     console.log('WS: Message:' + e)
     var msg = JSON.parse(e)
-    var respond = { repeat: msg }
-    if (msg.test)
-      respond.ground = [1111, 2132, 3333, 1232, 2231]
-
-    send(respond)
+    if (msg.play)
+      room.set(msg.play, player)
+    if (msg.restart)
+      room.start()
   });
 
-  send({ ping: 'Hello' })
-  send({
-    update: {
-      solved: 12,
-      deck_amount: room.deck.length,
-      amount: room.amount
-    },
-    ground: room.ground
-  })
+  send(room.all())
 })
 
 module.exports = router

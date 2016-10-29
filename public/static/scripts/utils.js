@@ -25,13 +25,17 @@
     }
   }
 
-  exports.repeat = function(v, n) {
+  exports.is_func = function (object) {
+    return typeof object === "function"
+  }
+
+  exports.repeat = function (n, v) {
     var result = []
     for (var i = 0; i < n; i++)
-      result.push(v)
+      result.push(exports.is_func(v) ? v(i) : v)
     return result
   }
-  
+
   exports.range = function (start, end) {
     var foo = [];
     for (var i = start; i <= end; i++) {

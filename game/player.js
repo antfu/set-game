@@ -4,21 +4,20 @@ class Player {
     this.name = name
   }
 
-  get ws() {
-    return this.ws
-  }
-  set ws(ws) {
+  bind_ws(ws) {
     this.ws = ws
   }
 
-  get avaliable() {
+  is_avaliable() {
     return this.ws !== undefined
   }
 
   send(data) {
-    if (this.avaliable) {
+    if (this.is_avaliable()) {
       this.ws.send(JSON.stringify(data))
     }
   }
-
 }
+
+
+module.exports = Player

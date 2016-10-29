@@ -4,14 +4,14 @@ var router = express.Router()
 router.use('/ws', require('./websocket'))
 
 router.get('/', function (req, res) {
-  res.redirect('/single')
+  res.redirect('/solo')
 })
 
 router.get('/help', function (req, res) {
   res.render('help')
 })
 
-router.get('/single', function (req, res) {
+router.get('/solo', function (req, res) {
   res.render('index', { mode: 'local' })
 })
 
