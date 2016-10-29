@@ -161,6 +161,7 @@ Mixins.local = {
         name: '',
         cards: []
       }
+      this.hints = 2
       this.deck = utils.make_deck()
       this.ground = this.deck.splice(0, this.amount)
       this.solved = 0
