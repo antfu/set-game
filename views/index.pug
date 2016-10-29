@@ -24,11 +24,15 @@ html
         .mi check
       .corner.right(:class='{disabled:selected.length == 0}', @click='clear')
         .mi delete
-      .fullscreen.btn(@click='fullscreen')
-        .mi {{fullscreened ? 'fullscreen_exit' : 'fullscreen'}}
+
+      .toolbar
+        .mi(@click='fullscreen') {{fullscreened ? 'fullscreen_exit' : 'zoom_out_map'}}
+        .mi(@click='restart', v-if='local') refresh
+        .mi(@click='hint', v-if='local', :class='{disabled:!hints}') lightbulb_outline
+          label {{hints}}
 
     script#card-template(type='text/x-template')
-      .card(v-if="com")
+      .card(v-if='com')
         .front
           template(v-for='n in com.number')
             .svg(v-svg='{color: com.color, shading: com.shading, shape:com.shape}')

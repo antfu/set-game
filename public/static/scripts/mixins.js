@@ -62,8 +62,10 @@ Mixins.local = {
       name: '',
       cards: []
     },
+    local: true,
     amount: 12,
-    solved: 0
+    solved: 0,
+    hints: 2
   },
   computed: {
     deck_amount: function () {
@@ -101,6 +103,7 @@ Mixins.local = {
                 delay: 200
               })
               vm.expend()
+              vm.save()
             }, 500)
           },
         })
@@ -119,7 +122,7 @@ Mixins.local = {
 
       if (this.amount >= 18 || this.deck_amount <= 0) {
         this.gameover()
-        location.reload()
+        this.restart()
         return false
       }
 
@@ -136,28 +139,81 @@ Mixins.local = {
       return this.expend()
     },
     gameover: function () {
+      localStorage.removeItem('set-game-save')
       alert('Gameover! ' + this.solved + ' Sets found!')
     },
     auto: function () {
       var sol = this.has_set()
       if (sol)
         this.set(sol)
+    },
+    restart: function () {
+      localStorage.removeItem('set-game-save')
+      this.amount = 12
+      this.flipped = []
+      for (var i = 0; i < this.amount; i++)
+        this.flipped.push(0)
+
+      this.previous = {
+        name: '',
+        cards: []
+      }
+      this.deck = utils.make_deck()
+      this.ground = this.deck.splice(0, this.amount)
+      this.solved = 0
+      this.flips({
+        cards: utils.range(0, this.amount - 1),
+        timeout: 70,
+        delay: 500
+      })
+
+      this.expend()
+    },
+    save: function () {
+      var data = {
+        deck: this.deck,
+        ground: this.ground,
+        amount: this.amount,
+        solved: this.solved,
+        hints: this.hints,
+        previous: this.previous,
+        time: (new Date()).getTime()
+      }
+      localStorage.setItem('set-game-save', JSON.stringify(data))
+      return data
+    },
+    load: function () {
+      var saved = localStorage.getItem('set-game-save')
+      if (!saved)
+        return null
+      var data = JSON.parse(saved)
+      console.log(data)
+
+      this.flipped = []
+      for (var i = 0; i < this.amount; i++)
+        this.flipped.push(0)
+
+      for (var k in data)
+        Vue.set(this, k, data[k])
+
+      this.flips({
+        cards: utils.range(0, this.amount - 1),
+        timeout: 70,
+        delay: 500
+      })
+      this.expend()
+      return true
+    },
+    hint: function () {
+      if (this.hints) {
+        this.selected = this.has_set()
+        this.hints--
+      }
     }
   },
   created: function () {
-    this.flipped = []
-    for (var i = 0; i < this.amount; i++)
-      this.flipped.push(0)
-
-    this.deck = utils.make_deck()
-    this.ground = this.deck.splice(0, this.amount)
-    this.flips({
-      cards: utils.range(0, this.amount - 1),
-      timeout: 70,
-      delay: 500
-    })
-
-    this.expend()
+    if (!this.load())
+      this.restart()
   }
 }
 

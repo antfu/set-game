@@ -85,3 +85,36 @@
     font-size: 3em;
   }
 }
+
+.toolbar {
+  position: absolute;
+  text-align: center;
+  width: 200px;
+  height: 30px;
+  left: calc(~"50% - 100px");
+  bottom: 0;
+
+  .mi {
+    font-size: 1.5em;
+    opacity: .3;
+    cursor: pointer;
+    margin: 0 8px;
+    transition: opacity .3s ease-in-out;
+
+    label {
+      font-family: monospace;
+      position: absolute;
+      top: 0;
+      font-size: 12px;
+    }
+
+    &:hover:not(.disabled) {
+      opacity: .6;
+    }
+
+    &.disabled {
+      opacity: .1;
+      cursor: default;
+    }
+  }
+}
