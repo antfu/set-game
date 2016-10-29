@@ -10,7 +10,7 @@ router.ws('/echo', function (ws, req) {
   });
 })
 
-router.ws('/room/:room/player/:player', function (ws, req) {
+router.ws('/r/:room/p/:player', function (ws, req) {
   var room = rooms[req.params.room] = rooms[req.params.room] || new SetGame(req.params.room)
   var player = room.get_player(req.params.player)
 

@@ -28,9 +28,10 @@ html
       .toolbar
         .title {{local?'Solo Mode':'Multiplayer Mode'}}
         .mi(@click='help') help
-        .mi(click='fullscreen') {{fullscreened ? 'fullscreen_exit' : 'zoom_out_map'}}
+        .mi(@click='fullscreen') {{fullscreened ? 'fullscreen_exit' : 'zoom_out_map'}}
         .mi(v-if='local', @click='restart') refresh
-        .mi(v-if='!local', @click='connect', :class='{disabled:connected}') settings_input_hdmi
+        .mi(v-if='!local', @dblclick='restart') refresh
+        .mi(v-if='!local && !connected', @click='connect') wifi tethering
         .mi(v-if='local', @click='hint', :class='{disabled:!hints}') lightbulb_outline
           label {{hints}}
 
