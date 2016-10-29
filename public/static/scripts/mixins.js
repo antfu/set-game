@@ -73,6 +73,9 @@ Mixins.commons = {
     has_set: function () {
       return utils.has_set(this.ground)
     },
+    cheat: function () {
+      this.selected = this.has_set()
+    },
     help: function () {
       location.href = "/help?from=" + location.pathname
     },
@@ -220,7 +223,7 @@ Mixins.local = {
     },
     hint: function () {
       if (this.hints) {
-        this.selected = this.has_set()
+        this.cheat()
         this.hints--
       }
     }
