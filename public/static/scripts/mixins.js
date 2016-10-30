@@ -14,6 +14,7 @@ Mixins.commons = {
     is_gameover: false,
     is_menu: false,
     scoreboard: {},
+    notify: '',
     previous: {
       name: '',
       cards: []
@@ -131,6 +132,7 @@ Mixins.local = {
     deck: [],
     hints: 2,
     local: true,
+    connected: true,
   },
   computed: {
     deck_amount: function () {
@@ -164,7 +166,11 @@ Mixins.local = {
         return true
 
       if (this.amount >= 18 || this.deck_amount <= 0) {
-        this.gameover({})
+        this.gameover({
+          scoreboard: {
+            Solved: this.solved
+          }
+        })
         this.restart()
         return false
       }
@@ -315,9 +321,11 @@ Mixins.web = function (url) {
         }
         this.socket.onclose = function (e) {
           vm.connected = false
+          vm.notify = 'Disconnected'
         }
         this.socket.onopen = function () {
           vm.connected = true
+          vm.notify = ''
         }
         return this.socket
       }

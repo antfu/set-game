@@ -17,16 +17,15 @@ router.get('/help', function (req, res) {
 })
 
 router.get('/s', function (req, res) {
-  res.render('index', { mode: 'local' })
+  res.render('solo')
 })
 
 router.get('/r/:room', function (req, res) {
   res.redirect('/r/' + req.params.room + '/p/' + randname().toLowerCase())
-
 })
 
 router.get('/r/:room/p/:player', function (req, res) {
-  res.render('index', { mode: 'web', room: req.params.room, player: req.params.player })
+  res.render('multi')
 })
 
 // 404
