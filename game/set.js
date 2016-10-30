@@ -16,6 +16,7 @@ class SetGame {
     this.solved = {}
     this.check_expend()
     this.boardcast(this.all())
+    this.starttime = (new Date()).getTime()
   }
 
   all() {
@@ -43,6 +44,7 @@ class SetGame {
       return false
     }
 
+    console.log('EXPENEDING')
     this.amount += 3
     var appends = []
     for (var i = 0; i < 3; i++) {
@@ -59,7 +61,14 @@ class SetGame {
   }
 
   gameover() {
-
+    this.endtime = (new Date()).getTime()
+    this.boardcast({
+      gameover: {
+        scoreboard: this.solved,
+        timespan: this.endtime - this.starttime
+      }
+    })
+    this.start()
   }
 
   set(indexes, player) {
@@ -89,6 +98,8 @@ class SetGame {
       })
 
       player.send({ solved: this.solved[player.name] })
+
+      this.check_expend()
 
     } else {
       //TODO:

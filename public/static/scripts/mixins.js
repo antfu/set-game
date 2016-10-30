@@ -11,6 +11,9 @@ Mixins.commons = {
     solved: 0,
     local: false,
     helping: false,
+    is_gameover: false,
+    is_menu: false,
+    scoreboard: {},
     previous: {
       name: '',
       cards: []
@@ -77,9 +80,25 @@ Mixins.commons = {
     cheat: function () {
       this.selected = this.has_set()
     },
+    auto: function () {
+      var sol = this.has_set()
+      if (sol)
+        this.set(sol)
+    },
     help: function () {
       //location.href = "/help?from=" + location.pathname
       this.helping = !this.helping
+    },
+    menu: function (open) {
+      this.is_menu = open
+    },
+    gameover: function (obj) {
+      if (!obj) {
+        this.is_gameover = false
+      } else {
+        this.scoreboard = obj
+        this.is_gameover = true
+      }
     },
     set_made: function (indexes, new_cards, callback) {
       var vm = this
@@ -145,7 +164,7 @@ Mixins.local = {
         return true
 
       if (this.amount >= 18 || this.deck_amount <= 0) {
-        this.gameover()
+        this.gameover({})
         this.restart()
         return false
       }
@@ -160,15 +179,6 @@ Mixins.local = {
         delay: 500
       })
       return this.expend()
-    },
-    gameover: function () {
-      localStorage.removeItem('set-game-save')
-      alert('Gameover! ' + this.solved + ' Sets found!')
-    },
-    auto: function () {
-      var sol = this.has_set()
-      if (sol)
-        this.set(sol)
     },
     restart: function () {
       localStorage.removeItem('set-game-save')
@@ -287,6 +297,18 @@ Mixins.web = function (url) {
             vm.set_failed()
           if (msg.solved)
             vm.solved = msg.solved
+          if (msg.expend) {
+            var count = msg.expend.length
+            var start = vm.ground.length
+            while (msg.expend.length)
+              vm.ground.push(msg.expend.shift())
+            vm.flips({
+              cards: utils.range(start, start + count - 1),
+              timeout: 70
+            })
+          }
+          if (msg.gameover)
+            vm.gameover(msg.gameover)
         }
         this.socket.onclose = function (e) {
           vm.connected = false

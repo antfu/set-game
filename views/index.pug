@@ -19,7 +19,9 @@ html
               card(:value='value', :index='index', :class='{flipped:flipped[index]}')
 
       .right.numbers {{solved}}
+        span Solved
       .left.numbers {{deck_amount}}
+        span Remains
 
       .corner.left(:class='{disabled:selected.length != 3}', @click='set()')
         .mi check
@@ -32,14 +34,38 @@ html
         .mi(@click='fullscreen') {{fullscreened ? 'fullscreen_exit' : 'zoom_out_map'}}
         .mi(v-if='local', @click='restart') fiber_new
         .mi(v-if='!local', @dblclick='restart') fiber_new
-        .mi(v-if='!local && !connected', @click='connect') wifi tethering
+        .mi(v-if='!local && !connected', @click='connect') wifi_tethering
+        .mi(@click='menu(true)') setting
         .mi(v-if='local', @click='hint', :class='{disabled:!hints}') lightbulb_outline
           label {{hints}}
 
-      .helping(v-if='helping')
-        iframe(src='/help')
+
+      .modal(v-if='is_gameover')
+        .centered
+          h2 Gameover
+          p {{solved}} Sets solved
+
+          ul.scoreboard(v-if='false')
+            li(v-for='(value, key) in scoreboard.scoreboard', v-if='value')
+              span.name {{key}}
+              span :
+              span {{value}} sets solved
+          .button(@click='gameover()') Close
+        .close(@click='gameover()')
+          .mi clear
+
+      .modal(v-if='is_menu')
+        .centered
+          p Hello
+        .close(@click='menu(false)')
+          .mi clear
+
+      .modal(v-if='helping')
+        iframe.filled(src='/help')
         .close(@click='help')
           .mi clear
+
+
 
     script#card-template(type='text/x-template')
       .card(v-if='com')

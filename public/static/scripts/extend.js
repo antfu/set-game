@@ -27,8 +27,10 @@ Vue.directive('svg', {
       el.appendChild(img)
       SVGInjector(img, {
         each: function (svg) {
-          svg.style.stroke = value.color || '#444'
-          svg.style.fill = value.shading || ('url(#' + svg.getElementsByTagName("pattern")[0].id + ')')
+          if (svg && svg.style) {
+            svg.style.stroke = value.color || '#444'
+            svg.style.fill = value.shading || ('url(#' + svg.getElementsByTagName("pattern")[0].id + ')')
+          }
         }
       })
     }

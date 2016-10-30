@@ -29,4 +29,9 @@ router.get('/r/:room/p/:player', function (req, res) {
   res.render('index', { mode: 'web', room: req.params.room, player: req.params.player })
 })
 
+// 404
+router.get('*', function (req, res) {
+  res.redirect('/')
+})
+
 module.exports = router
