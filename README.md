@@ -2,18 +2,25 @@
 
 🎰 A real-time card game Set on web!
 
-![Solo](https://img.shields.io/badge/solo-finished-green.svg)
-![Multiplayer](https://img.shields.io/badge/multiplayer-beta-yellow.svg)
+![Solo](https://img.shields.io/badge/solo-finished-green.svg) ![Multiplayer](https://img.shields.io/badge/multiplayer-finished-green.svg)
 
-![Screenshot1](https://cloud.githubusercontent.com/assets/11247099/19827713/9f149b54-9de5-11e6-802b-4fe9fb69a240.png)
+![screenshot2](https://cloud.githubusercontent.com/assets/11247099/19839549/fcddd586-9f1e-11e6-829e-7841bb0f01f7.png)
 
 ## Game
 
-[Rules](https://set.antnf.com/help)
-
 Wikipedia: [Set (game)][1]
 
-[1]: https://en.wikipedia.org/wiki/Set_(game)
+## Deploy
+
+Clone this repo and:
+
+```sh
+npm install
+npm run run
+```
 
 ## License
+
 MIT
+
+[1]: https://en.wikipedia.org/wiki/Set_(game)
