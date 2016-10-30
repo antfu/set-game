@@ -6,9 +6,11 @@
 
 ![screenshot2](https://cloud.githubusercontent.com/assets/11247099/19839549/fcddd586-9f1e-11e6-829e-7841bb0f01f7.png)
 
-## Game
+## Rule
 
 Wikipedia: [Set (game)][1]
+
+In-game Help: [Help - Set Game](https://set.antnf.com/help)
 
 ## Deploy
 
@@ -18,6 +20,9 @@ Clone this repo and:
 npm install
 npm run run
 ```
+
+## Other Games
+Uno Game: https://github.com/antfu/uno-game
 
 ## License
 
