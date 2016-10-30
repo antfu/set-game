@@ -31,13 +31,15 @@ html
       .toolbar
         .title {{local?'Solo Mode':'Multiplayer Mode'}}
         .mi(@click='help') help
-        .mi(@click='fullscreen') {{fullscreened ? 'fullscreen_exit' : 'zoom_out_map'}}
-        .mi(v-if='local', @click='restart') fiber_new
-        .mi(v-if='!local', @dblclick='restart') fiber_new
+        .mi(@click='fullscreen') zoom_out_map
+        .mi(v-if='local', @click='restart') change_history
+        .mi(v-if='!local', @dblclick='restart') change_history
         .mi(v-if='!local && !connected', @click='connect') wifi_tethering
-        .mi(@click='menu(true)') setting
+        .mi(v-if='!local') person
+          label {{players}}
         .mi(v-if='local', @click='hint', :class='{disabled:!hints}') lightbulb_outline
           label {{hints}}
+        //.mi(@click='menu(true)') settings
 
 
       .modal(v-if='is_gameover')

@@ -19,10 +19,14 @@ class SetGame {
     this.starttime = (new Date()).getTime()
   }
 
+  player_amount() {
+    return Object.keys(this.players).length
+  }
   all() {
     return {
       update: this.info(),
-      ground: this.ground
+      ground: this.ground,
+      players: this.player_amount()
     }
   }
 
@@ -69,6 +73,11 @@ class SetGame {
       }
     })
     this.start()
+  }
+
+  leave(player) {
+    delete this.players[player.name]
+    this.boardcast({ players: this.player_amount() })
   }
 
   set(indexes, player) {

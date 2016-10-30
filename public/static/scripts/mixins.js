@@ -254,7 +254,8 @@ Mixins.web = function (url) {
       url: url,
       deck_amount: 0,
       connected: false,
-      local: false
+      local: false,
+      players: 0
     },
     methods: {
       set: function (s) {
@@ -309,6 +310,8 @@ Mixins.web = function (url) {
           }
           if (msg.gameover)
             vm.gameover(msg.gameover)
+          if (msg.players)
+            vm.players = msg.players
         }
         this.socket.onclose = function (e) {
           vm.connected = false
