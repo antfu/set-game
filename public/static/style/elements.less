@@ -2,20 +2,44 @@
   border: 2px solid #fff;
   border-radius: 5px;
   display: inline-block;
-  transition: .1s ease-out;
-  padding: 2px 8px 4px;
+  transition: .3s ease-in-out;
+  padding: 10px 18px;
   margin: 5px;
   cursor: pointer;
-  opacity: .6;
-}
+  opacity: .5;
+  color: #fff;
+  text-decoration: none;
 
-.button:hover:not(.disabled) {
-  opacity: 1;
-}
+  &:hover:not(.disabled) {
+    opacity: 1;
+  }
 
-.button.disabled {
-  opacity: .3;
-  cursor: default;
+  &.disabled {
+    opacity: .3;
+    cursor: default;
+  }
+
+  &.block {
+    display: block;
+    max-width: 140px;
+    margin: 10px auto;
+    text-align: left;
+  }
+
+  &.borderless {
+    border: 0;
+  }
+
+  .text,
+  i {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 5px;
+  }
+
+  i {
+    opacity: .7;
+  }
 }
 
 .buttons {
@@ -122,6 +146,14 @@
       cursor: default;
     }
   }
+}
+
+.centered {
+  text-align: center;
+  margin: 0 auto;
+  position: relative;
+  top: 30%;
+  transform: perspective(1px) translateY(-50%);
 }
 
 blockquote {

@@ -5,7 +5,7 @@ var randname = require('../assert/name.js').randname
 router.use('/ws', require('./websocket'))
 
 router.get('/', function (req, res) {
-  res.redirect('/s')
+  res.render('home')
 })
 
 router.get('/r', function (req, res) {

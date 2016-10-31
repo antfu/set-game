@@ -1,0 +1,88 @@
+doctype html
+html
+  head
+    title Set Game
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(href='/static/style/index.css', rel='stylesheet')
+    link(rel='icon', type='image/png', href='/static/favicon.png')
+  body
+    #app.fixed
+      .topbar(:class='{disabled:!connected}')
+        .previous
+          .name {{previous.name}}
+          .mask.scale-compact-5(v-for='(value,index) in previous.cards',:key='value')
+            card(:value='value', :index='index', class='flipped')
+
+        .right.numbers {{solved}}
+          span Solved
+        .left.numbers {{deck_amount}}
+          span Remains
+
+      .ground(:class='{disabled:!connected}')
+        .pure-g
+          .pure-u-1-3(v-for='(value,index) in ground', :key='value')
+            .mask(@click='select(index, $event)', :class='{selected: inarr(index,selected)}')
+              card(:value='value', :index='index', :class='{flipped:flipped[index]}')
+
+      .notify(:class='{hidden:!notify}')
+        p {{notify}}
+
+
+      .corner.left(:class='{disabled:selected.length != 3}', @click='set()')
+        .mi check
+      .corner.right(:class='{disabled:selected.length == 0}', @click='clear')
+        .mi clear
+
+      .toolbar
+        .title {{local?'Solo Mode':'Multiplayer Mode'}}
+        .mi(@click='help') help
+        .mi(@click='fullscreen') zoom_out_map
+        .mi(v-if='local', @click='restart') change_history
+        .mi(v-if='!local', @dblclick='restart') change_history
+        .mi(v-if='!local') person
+          label {{players}}
+        .mi(v-if='local', @click='hint', :class='{disabled:!hints}') lightbulb_outline
+          label {{hints}}
+        .mi(v-if='!local && !connected', @click='connect') refresh
+
+      .modal(v-if='is_gameover')
+        .centered
+          h1 Gameover
+          .pure-g.scoreboard
+            template(v-for='(value, key) in scoreboard.scoreboard')
+              .pure-u-1-3.name {{key}}
+              .pure-u-2-3.desc
+                span.score {{value || 0}}
+                span.text sets
+
+          .button(@click='gameover()') Close
+        .close(@click='gameover()')
+          .mi clear
+
+      .modal(v-if='is_menu')
+        .centered
+          p Hello
+        .close(@click='menu(false)')
+          .mi clear
+
+      .modal(v-if='helping')
+        iframe.filled(src='/help')
+        .close(@click='help')
+          .mi clear
+
+
+
+    script#card-template(type='text/x-template')
+      .card(v-if='com')
+        .front
+          template(v-for='n in com.number')
+            .svg(v-svg='{color: com.color, shading: com.shading, shape:com.shape}')
+        .back
+
+    script(src='/static/dist/vue.min.js')
+    script(src='/static/dist/svg-injector.min.js')
+    script(src='/static/scripts/utils.js')
+    script(src='/static/scripts/mixins.js')
+    script(src='/static/scripts/extend.js')
+    script(src='/static/scripts/app.js')
+    block mode

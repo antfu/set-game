@@ -15,8 +15,11 @@ class SetGame {
     this.previous = { cards: [], name: '' }
     this.solved = {}
     this.check_expend()
-    this.boardcast(this.all())
     this.starttime = (new Date()).getTime()
+
+    var data = this.all()
+    data.solved = 0
+    this.boardcast(data)
   }
 
   player_amount() {
@@ -118,7 +121,7 @@ class SetGame {
 
   boardcast(data) {
     for (var name in this.players)
-      this.players[name].send(data)
+      this.players[name].send(utils.is_func(data) ? data(this.players[name]) : data)
   }
 }
 
