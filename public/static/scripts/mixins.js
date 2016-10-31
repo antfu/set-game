@@ -253,8 +253,6 @@ Mixins.local = {
 }
 
 Mixins.web = function (url) {
-  var cache = {}
-
   return {
     data: {
       url: url,

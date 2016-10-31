@@ -39,13 +39,11 @@ html
         .mi(@click='fullscreen') zoom_out_map
         .mi(v-if='local', @click='restart') change_history
         .mi(v-if='!local', @dblclick='restart') change_history
-        .mi(v-if='!local && !connected', @click='connect') wifi_tethering
         .mi(v-if='!local') person
           label {{players}}
         .mi(v-if='local', @click='hint', :class='{disabled:!hints}') lightbulb_outline
           label {{hints}}
-        //.mi(@click='menu(true)') settings
-
+        .mi(v-if='!local && !connected', @click='connect') refresh
 
       .modal(v-if='is_gameover')
         .centered
@@ -81,8 +79,8 @@ html
             .svg(v-svg='{color: com.color, shading: com.shading, shape:com.shape}')
         .back
 
-    script(src='/static/scripts/dist/vue.min.js')
-    script(src='/static/scripts/dist/svg-injector.min.js')
+    script(src='/static/dist/vue.min.js')
+    script(src='/static/dist/svg-injector.min.js')
     script(src='/static/scripts/utils.js')
     script(src='/static/scripts/mixins.js')
     script(src='/static/scripts/extend.js')
