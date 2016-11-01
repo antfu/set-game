@@ -161,7 +161,6 @@ Mixins.local = {
     },
     expend: function () {
       var sol = this.has_set()
-      console.log(sol)
       if (sol)
         return true
 
@@ -281,7 +280,7 @@ Mixins.web = function (url) {
         this.socket = new WebSocket(this.url)
         this.socket.onmessage = function (e) {
           var msg = JSON.parse(e.data)
-          console.log('Message: ', msg)
+          console.debug('Message: ', msg)
           if (msg.update) {
             for (var k in msg.update)
               Vue.set(vm, k, msg.update[k])

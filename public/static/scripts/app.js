@@ -1,5 +1,7 @@
-function makeapp(data) {
 
+console.info('Hi. The source code is available on github: https://github.com/antfu/set-game.\nIf you have any questions, feel free to email me at anthonyfu117@hotmail.com.')
+
+function makeapp(data) {
   var mixins = [Mixins.commons]
   if (data.mode === 'local')
     mixins.push(Mixins.local)

@@ -148,12 +148,36 @@
   }
 }
 
-.centered {
-  text-align: center;
-  margin: 0 auto;
-  position: relative;
-  top: 30%;
-  transform: perspective(1px) translateY(-50%);
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0,0,0,0.9);
+  overflow: hidden;
+
+  .centered {
+    text-align: center;
+    margin: 0 auto;
+    position: relative;
+    top: 30%;
+    transform: perspective(1px) translateY(-50%);
+  }
+
+  .filled {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .close {
+    position: fixed;
+    top: 5px;
+    right: 5px;
+    padding: 10px;
+    cursor: pointer;
+  }
 }
 
 blockquote {
