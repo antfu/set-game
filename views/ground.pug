@@ -30,15 +30,15 @@ block body
 
     .toolbar
       .title {{local?'Solo Mode':'Multiplayer Mode'}}
-      .mi(@click='help') help
-      .mi(@click='fullscreen') zoom_out_map
-      .mi(v-if='local', @click='restart') change_history
-      .mi(v-if='!local', @dblclick='restart') change_history
-      .mi(v-if='!local') person
+      .mi.tooltip(@click='help', data-tooltip="Help") help
+      .mi.tooltip(@click='fullscreen', data-tooltip="Fullscreen") zoom_out_map
+      .mi.tooltip(v-if='local', @click='restart', data-tooltip="Restart") change_history
+      .mi.tooltip(v-if='!local', @dblclick='restart', data-tooltip="Restart") change_history
+      .mi.tooltip(v-if='!local', data-tooltip="Players") person
         label {{players}}
-      .mi(v-if='local', @click='hint', :class='{disabled:!hints}') lightbulb_outline
+      .mi.tooltip(v-if='local', @click='hint', :class='{disabled:!hints}', data-tooltip="Hint") lightbulb_outline
         label {{hints}}
-      .mi(v-if='!local && !connected', @click='connect') refresh
+      .mi.tooltip(v-if='!local && !connected', @click='connect', data-tooltip="Reconnect") refresh
 
     .modal(v-if='is_gameover')
       .centered
