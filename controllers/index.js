@@ -30,7 +30,7 @@ router.get('/r/:room/p/:player', function (req, res) {
 
 // 404
 router.get('*', function (req, res) {
-  res.redirect('/')
+  res.status(404).render('error', { error: 'PAGE NOT FOUND' })
 })
 
 module.exports = router

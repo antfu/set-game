@@ -1,22 +1,17 @@
-doctype html
-html
-  head
-    title Set Game
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    link(href='/static/style/index.css', rel='stylesheet')
-    link(rel='icon', type='image/png', href='/static/favicon.png')
-  body
-    .centered.menu
-      h1 SET
-      a.button.block.borderless(href='/s')
-        i.mi person
-        .text Single Player
-      a.button.block.borderless(href='/r')
-        i.mi people
-        .text Multiplayer
-      a.button.block.borderless(href='/help')
-        i.mi help
-        .text How to play
+extends base.pug
 
-    .footer
-      a(href='https://antnf.com') @Anthony Fu
+block body
+  .centered.menu
+    h1 SET
+    a.button.block.borderless(href='/s')
+      i.mi person
+      .text Single Player
+    a.button.block.borderless(href='/r')
+      i.mi people
+      .text Multiplayer
+    a.button.block.borderless(href='/help')
+      i.mi help
+      .text How to play
+
+  .footer
+    a(href='https://antnf.com') @Anthony Fu

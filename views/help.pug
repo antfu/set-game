@@ -1,132 +1,130 @@
-doctype html
-html
-  head
-    title Help - Set Game
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    link(href='/static/style/index.css', rel='stylesheet')
-    link(rel='icon', type='image/png', href='/static/favicon.png')
-  body
-    #app
-      .scroller
-        .help
-          h1 How to play
+extends base.pug
 
-          blockquote
-            | Wikipedia:
-            a(href='https://en.wikipedia.org/wiki/Set_(game)') Set (game)
+block title
+  title Help - Set Game
+
+block body
+  #app
+    .scroller
+      .help
+        h1 How to play
+
+        blockquote
+          | Wikipedia:
+          a(href='https://en.wikipedia.org/wiki/Set_(game)') Set (game)
+
+        p
+          | The object of the is to identify a SET of 3 cards from 12 cards placed
+          | face up on table. Each card has four features, which can vary as follows:
+
+        .features
+          h4 Shape
+          .mask
+            card.flipped(:value='1111')
+            span Ovals
+          .mask
+            card.flipped(:value='1112')
+            span Squiggles
+          .mask
+            card.flipped(:value='1113')
+            span Diamonds
+
+          h4 Color
+          .mask
+            card.flipped(:value='1111')
+            span Red
+          .mask
+            card.flipped(:value='1121')
+            span Green
+          .mask
+            card.flipped(:value='1131')
+            span Blue
+
+          h4 Number
+          .mask
+            card.flipped(:value='1132')
+            span One
+          .mask
+            card.flipped(:value='2132')
+            span Two
+          .mask
+            card.flipped(:value='3132')
+            span Three
+
+          h4 Shapes
+          .mask
+            card.flipped(:value='3123')
+            span Solid
+          .mask
+            card.flipped(:value='3223')
+            span Striped
+          .mask
+            card.flipped(:value='3323')
+            span Outlined
+
+        p
+          | A SET consists of 3 cards in which each of the card's features,
+          | looked at one-by-one, are the same on each card, or, are different
+          | on each card. All the features must separately sastify this rule.
+          | See examples below
+
+        h2 Quick Check
+
+        p
+          | The rules of Set are summarized by: If you can sort a group of
+          | three cards into
+          blockquote Two of ____ and one of _____
+          | then it is not a set.
+
+        h2 Examples
+        .examples
+          p For example, the following are SETs:
+
+          .mask
+            card.flipped(:value='2311')
+          .mask
+            card.flipped(:value='2211')
+          .mask
+            card.flipped(:value='2111')
 
           p
-            | The object of the is to identify a SET of 3 cards from 12 cards placed
-            | face up on table. Each card has four features, which can vary as follows:
+            | All three cards have the same shape, the same number of symbols
+            | and they all have different shadings.
 
-          .features
-            h4 Shape
-            .mask
-              card.flipped(:value='1111')
-              span Ovals
-            .mask
-              card.flipped(:value='1112')
-              span Squiggles
-            .mask
-              card.flipped(:value='1113')
-              span Diamonds
-
-            h4 Color
-            .mask
-              card.flipped(:value='1111')
-              span Red
-            .mask
-              card.flipped(:value='1121')
-              span Green
-            .mask
-              card.flipped(:value='1131')
-              span Blue
-
-            h4 Number
-            .mask
-              card.flipped(:value='1132')
-              span One
-            .mask
-              card.flipped(:value='2132')
-              span Two
-            .mask
-              card.flipped(:value='3132')
-              span Three
-
-            h4 Shapes
-            .mask
-              card.flipped(:value='3123')
-              span Solid
-            .mask
-              card.flipped(:value='3223')
-              span Striped
-            .mask
-              card.flipped(:value='3323')
-              span Outlined
+          .mask
+            card.flipped(:value='1222')
+          .mask
+            card.flipped(:value='2231')
+          .mask
+            card.flipped(:value='3213')
 
           p
-            | A SET consists of 3 cards in which each of the card's features,
-            | looked at one-by-one, are the same on each card, or, are different
-            | on each card. All the features must separately sastify this rule.
-            | See examples below
+            | All three cards have different shape, different colors,
+            | and different numbers of symbols and they all have the same shading.
 
-          h2 Quick Check
+          .mask
+            card.flipped(:value='1231')
+          .mask
+            card.flipped(:value='2123')
+          .mask
+            card.flipped(:value='3312')
 
           p
-            | The rules of Set are summarized by: If you can sort a group of
-            | three cards into
-            blockquote Two of ____ and one of _____
-            | then it is not a set.
-
-          h2 Examples
-          .examples
-            p For example, the following are SETs:
-
-            .mask
-              card.flipped(:value='2311')
-            .mask
-              card.flipped(:value='2211')
-            .mask
-              card.flipped(:value='2111')
-
-            p
-              | All three cards have the same shape, the same number of symbols
-              | and they all have different shadings.
-
-            .mask
-              card.flipped(:value='1222')
-            .mask
-              card.flipped(:value='2231')
-            .mask
-              card.flipped(:value='3213')
-
-            p
-              | All three cards have different shape, different colors,
-              | and different numbers of symbols and they all have the same shading.
-
-            .mask
-              card.flipped(:value='1231')
-            .mask
-              card.flipped(:value='2123')
-            .mask
-              card.flipped(:value='3312')
-
-            p
-              | All three cards have different shape, different colors,
-              | different numbers of symbols and different shadings.
+            | All three cards have different shape, different colors,
+            | different numbers of symbols and different shadings.
 
 
-            //a.goback(href='/') Back to Game
+          //a.goback(href='/') Back to Game
 
-    script#card-template(type='text/x-template')
-      .card(v-if='com')
-        .front
-          template(v-for='n in com.number')
-            .svg(v-svg='{color: com.color, shading: com.shading, shape:com.shape}')
-        .back
+  script#card-template(type='text/x-template')
+    .card(v-if='com')
+      .front
+        template(v-for='n in com.number')
+          .svg(v-svg='{color: com.color, shading: com.shading, shape:com.shape}')
+      .back
 
-    script(src='/static/dist/vue.min.js')
-    script(src='/static/dist/svg-injector.min.js')
-    script(src='/static/scripts/utils.js')
-    script(src='/static/scripts/extend.js')
-    script var app = new Vue({el: '#app'})
+  script(src='/static/dist/vue.min.js')
+  script(src='/static/dist/svg-injector.min.js')
+  script(src='/static/scripts/utils.js')
+  script(src='/static/scripts/extend.js')
+  script var app = new Vue({el: '#app'})

@@ -1,0 +1,17 @@
+extends base.pug
+
+block title
+  title Error - Set Game
+
+block body
+  .centered.menu
+    h1= error
+    a.button.block.borderless(onclick="javascript:location.reload()")
+      i.mi refresh
+      .text Reload page
+    a.button.block.borderless(href='/')
+      i.mi arrow_back
+      .text Back to lobby
+
+  .footer
+    a(href='https://antnf.com') @Anthony Fu
