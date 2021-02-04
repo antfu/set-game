@@ -10,7 +10,7 @@ RUN apt-get -y update
 RUN apt-get -y install git curl
 
 # Clone the git repository
-RUN git clone https://github.com/legomannetje/set-game 
+RUN git clone https://github.com/antfu/set-game 
 
 # Set the working directory
 WORKDIR set-game
